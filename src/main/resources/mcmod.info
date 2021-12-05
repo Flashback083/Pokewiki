@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "pokewiki",
+    "name": "Pokewiki",
+    "description": "",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
