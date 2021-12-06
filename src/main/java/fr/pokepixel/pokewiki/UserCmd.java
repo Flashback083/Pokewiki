@@ -46,7 +46,8 @@ public class UserCmd extends CommandBase {
             if (args[0].equalsIgnoreCase("reload")){
                 if (sender instanceof EntityPlayerMP){
                     EntityPlayerMP player = (EntityPlayerMP) sender;
-                    if (!hasPermission(player,"You don't have the permission to do this!")){
+                    if (!hasPermission(player,"pokewiki.reload")){
+                        sender.sendMessage(new TextComponentString("You don't have the permission to do this!"));
                         return;
                     }
                 }

@@ -8,7 +8,7 @@ public class Lang {
     public static final String CATEGORY_GENERAL_LANG = "General lang config";
     private static String backtoformselection = "&bClick to go back to form selection";
     private static String pokemontype = "&bType:";
-    private static String egggroups = "&bEgg groups: %egggroups%";
+    private static String egggroups = "&bEgg group: %egggroups%";
     private static String evo = "&bEvo:";
     private static String spawninfos = "&bSpawn infos:";
     private static String lorespawninfo1 = "&eClick to see the spawn list";
@@ -36,7 +36,6 @@ public class Lang {
     private static String levellingup = "&aLevelling up";
     private static String levelnumber = "&ato level %level%";
     private static String exposedtoitem = "&bWhen exposed to %item%";
-
     private static String tradedwith = "&dTrading with %pokemon%";
     private static String traded = "&dTrading";
     private static String chancecondition = "&3%chance% percent chance";
@@ -46,6 +45,20 @@ public class Lang {
     private static String helditemcondition = "&bHeld item: %helditem%";
     private static String abovealtitudecondition = "&bAbove altitude: %altitude%";
     private static String levelcondition = "&bStarting at level: %level%";
+    private static String movecondition = "&bKnowing move: %move%";
+    private static String movetypecondition = "&bWith a move of type: %movetype%";
+    private static String withpokemoncondition = "&bWith these Pokémon in party: %pokemonlist%";
+    private static String withtypecondition = "&bWith Pokémon of these types in party: %typelist%";
+    private static String withformcondition = "&bWith Pokémon of these forms in party: %formlist%";
+    private static String statratiocondition = "&bWith a stat ratio of %ratio% between %stat1% and %stat2%";
+    private static String timecondition = "&bDuring: %time%";
+    private static String weathercondition = "&bWith weather: Rain";
+    private static String scrollcondition = "&bWith Scroll: %scroll% at range %range%";
+    private static String battlecriticalcondition = "&bWith critical: %crit%";
+
+    private static String absenceofhealcondition = "&bWith Health absence: (WIP)";
+    private static String statuspersistcondition = "&bWith Status: (WIP)";
+    private static String withinstructurecondition = "&bWithin Structure: (WIP)";
 
     public static void readConfig() {
         Configuration cfg = Pokewiki.lang;
@@ -104,7 +117,24 @@ public class Lang {
         traded = cfg.getString("traded", CATEGORY_EVO_LANG, traded, "&dTrading");
         chancecondition = cfg.getString("chancecondition", CATEGORY_EVO_LANG, chancecondition, "&3%chance% percent chance");
         evorockcondition = cfg.getString("evorockcondition", CATEGORY_EVO_LANG, evorockcondition, "&bWithin %range% blocks of a %rockname%");
-
+        friendshipcondition = cfg.getString("friendshipcondition", CATEGORY_EVO_LANG, friendshipcondition, "&bFriendship: %friendship%");
+        gendercondition = cfg.getString("gendercondition", CATEGORY_EVO_LANG, gendercondition, "&bGender: %gender%");
+        helditemcondition = cfg.getString("helditemcondition", CATEGORY_EVO_LANG, helditemcondition, "&bHeld item: %helditem%");
+        abovealtitudecondition = cfg.getString("abovealtitudecondition", CATEGORY_EVO_LANG, abovealtitudecondition,"&bAbove altitude: %altitude%");
+        levelcondition = cfg.getString("levelcondition", CATEGORY_EVO_LANG, levelcondition, "&bStarting at level: %level%");
+        movecondition = cfg.getString("movecondition", CATEGORY_EVO_LANG, movecondition, "&bKnowing move: %move%");
+        movetypecondition = cfg.getString("movetypecondition", CATEGORY_EVO_LANG, movetypecondition, "&bWith a move of type: %movetype%");
+        withpokemoncondition = cfg.getString("withpokemoncondition", CATEGORY_EVO_LANG, withpokemoncondition, "&bWith these Pokémon in party: %pokemonlist%");
+        withtypecondition = cfg.getString("withtypecondition", CATEGORY_EVO_LANG, withtypecondition,"&bWith Pokémon of these types in party: %typelist%" );
+        withformcondition = cfg.getString("withformcondition", CATEGORY_EVO_LANG, withformcondition,"&bWith Pokémon of these forms in party: %formlist%" );
+        statratiocondition = cfg.getString("statratiocondition", CATEGORY_EVO_LANG, statratiocondition, "&bWith a stat ratio of %ratio% between %stat1% and %stat2%");
+        timecondition = cfg.getString("timecondition", CATEGORY_EVO_LANG, timecondition, "&bDuring: %time%");
+        weathercondition = cfg.getString("weathercondition", CATEGORY_EVO_LANG, weathercondition, "&bWith weather: Rain");
+        scrollcondition = cfg.getString("scrollcondition", CATEGORY_EVO_LANG, scrollcondition, "&bWith Scroll: %scroll% at range %range%");
+        battlecriticalcondition = cfg.getString("battlecriticalcondition", CATEGORY_EVO_LANG, battlecriticalcondition, "&bWith critical: %crit%");
+        absenceofhealcondition = cfg.getString("absenceofhealcondition", CATEGORY_EVO_LANG, absenceofhealcondition, "&bWith Health absence: (WIP)");
+        statuspersistcondition = cfg.getString("statuspersistcondition", CATEGORY_EVO_LANG, statuspersistcondition,"&bWith Status: (WIP)");
+        withinstructurecondition = cfg.getString("withinstructurecondition", CATEGORY_EVO_LANG, withinstructurecondition, "&bWithin Structure: (WIP)");
     }
 
 

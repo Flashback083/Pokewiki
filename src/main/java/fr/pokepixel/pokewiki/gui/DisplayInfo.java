@@ -70,7 +70,7 @@ public class DisplayInfo {
                 .hideFlags(FlagType.All)
                 .display(new ItemStack(PixelmonItemsBadges.marshBadge))
                 .title(translateAlternateColorCodes('&',langgeneral.get("pokemontype").getString()))
-                .lore(Lists.newArrayList(getType(pokemon),getEggGroup(pokemon.getBaseStats())))
+                .lore(Lists.newArrayList(getType(pokemon),getEggGroup(pokemon.getBaseStats(),langgeneral)))
                 .build();
 
         long baserate = (Math.round(pokemon.getBaseStats().getCatchRate() / 255.0D * 100.0D));
