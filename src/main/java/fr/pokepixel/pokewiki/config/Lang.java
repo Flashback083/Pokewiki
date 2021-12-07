@@ -59,6 +59,8 @@ public class Lang {
     private static String absenceofhealcondition = "&bWith Health absence: (WIP)";
     private static String statuspersistcondition = "&bWith Status: (WIP)";
     private static String withinstructurecondition = "&bWithin Structure: (WIP)";
+    private static String naturecondition = "&bWith nature: (WIP)";
+
 
     public static void readConfig() {
         Configuration cfg = Pokewiki.lang;
@@ -135,6 +137,8 @@ public class Lang {
         absenceofhealcondition = cfg.getString("absenceofhealcondition", CATEGORY_EVO_LANG, absenceofhealcondition, "&bWith Health absence: (WIP)");
         statuspersistcondition = cfg.getString("statuspersistcondition", CATEGORY_EVO_LANG, statuspersistcondition,"&bWith Status: (WIP)");
         withinstructurecondition = cfg.getString("withinstructurecondition", CATEGORY_EVO_LANG, withinstructurecondition, "&bWithin Structure: (WIP)");
+        naturecondition = cfg.getString("naturecondition", CATEGORY_EVO_LANG, naturecondition, "&bWith nature: (WIP)");
+
     }
 
 

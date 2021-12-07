@@ -247,6 +247,10 @@ public class SimpleInfo {
                             WithinStructureCondition withinStructureCondition = (WithinStructureCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("withinstructurecondition").getString());
                             evoinfo.add("      " + conditiontxt);
+                        }else if (condition instanceof NatureCondition){
+                            NatureCondition natureCondition = (NatureCondition) condition;
+                            String conditiontxt = translateAlternateColorCodes('&', lang.get("naturecondition").getString());
+                            evoinfo.add("      " + conditiontxt);
                         }
                     }
                 }
