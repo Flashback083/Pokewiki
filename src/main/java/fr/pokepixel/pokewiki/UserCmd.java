@@ -37,7 +37,7 @@ public class UserCmd extends CommandBase {
 
     @Override
     public String getUsage(ICommandSender sender) {
-        return  "§a/pwiki <pokemon>";
+        return  "§a/pokewiki <pokemon>";
     }
 
     @Override
