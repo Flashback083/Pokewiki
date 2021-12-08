@@ -13,23 +13,22 @@ import ca.landonjw.gooeylibs2.api.template.LineType;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.api.spawning.archetypes.entities.pokemon.SpawnInfoPokemon;
 import com.pixelmonmod.pixelmon.config.PixelmonItems;
 import com.pixelmonmod.pixelmon.config.PixelmonItemsHeld;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
 
-import static fr.pokepixel.pokewiki.gui.ChoiceForm.getSpawnInfoList;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
-import static fr.pokepixel.pokewiki.info.SpawnDetails.createPokeDetails;
+import static fr.pokepixel.pokewiki.info.SimpleInfo.getInfoEvo;
 
-public class DisplaySpawn {
+public class DisplayEvo {
 
-    public static void displaySpawnGUI(EntityPlayerMP player, Pokemon pokemon){
+    public static void displayEvoGUI(EntityPlayerMP player, Pokemon pokemon, ConfigCategory langevo){
 
         Button ejectbutton = GooeyButton.builder()
                 .title("§cBack")
@@ -79,23 +78,25 @@ public class DisplaySpawn {
                 .build();
 
         LinkedPage.Builder page = LinkedPage.builder()
-                .title("Spawn Info");
+                .title("Evolution Info");
 
         //Make this offthread
-        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, getSpawnInfos(pokemon), page);
+        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, getEvoInfos(pokemon,langevo), page);
         UIManager.openUIForcefully(player, firstPage);
 
     }
 
 
-    public static List<Button> getSpawnInfos(Pokemon pokemon){
+    public static List<Button> getEvoInfos(Pokemon pokemon, ConfigCategory langevo){
         List<Button> buttonList = Lists.newArrayList();
-        List<SpawnInfoPokemon> spawnInfoPokemonList = Lists.newArrayList(getSpawnInfoList(pokemon));
-        spawnInfoPokemonList.forEach(spawnInfoPokemon -> {
+        List<String> listevo = getInfoEvo(pokemon, langevo);
+        ItemStack item = ItemPixelmonSprite.getPhoto(pokemon);
+        String name = pokemon.getLocalizedName();
+        listevo.forEach(evo -> {
             buttonList.add(GooeyButton.builder()
-                    .display(ItemPixelmonSprite.getPhoto(pokemon))
-                            .title("§a"+pokemon.getLocalizedName())
-                            .lore(Lists.newArrayList(createPokeDetails(spawnInfoPokemon)))
+                    .display(item)
+                    .title("§a"+name)
+                    .lore(Lists.newArrayList(evo))
                     .build());
         });
         return buttonList;

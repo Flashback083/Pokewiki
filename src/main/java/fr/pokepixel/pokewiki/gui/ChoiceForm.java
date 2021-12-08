@@ -80,6 +80,10 @@ public class ChoiceForm {
             String formname = "";
             if (!pokemon.getFormEnum().getFormSuffix().isEmpty() && !pokemon.getFormEnum().getFormSuffix().equalsIgnoreCase("-normal")){
                 formname = possibleForm.getLocalizedName();
+            }else{
+                if (possibleForm.getUnlocalizedName().contains("battle_bond")){
+                    formname = possibleForm.getLocalizedName();
+                }
             }
             list.add(GooeyButton.builder()
                     .display(ItemPixelmonSprite.getPhoto(pokemon))

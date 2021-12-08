@@ -13,6 +13,7 @@ import com.pixelmonmod.pixelmon.config.PixelmonItems;
 import com.pixelmonmod.pixelmon.config.PixelmonItemsBadges;
 import com.pixelmonmod.pixelmon.config.PixelmonItemsHeld;
 import com.pixelmonmod.pixelmon.config.PixelmonItemsPokeballs;
+import com.pixelmonmod.pixelmon.entities.pixelmon.stats.Gender;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import fr.pokepixel.pokewiki.Pokewiki;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -28,6 +29,7 @@ import static fr.pokepixel.pokewiki.config.Lang.CATEGORY_EVO_LANG;
 import static fr.pokepixel.pokewiki.config.Lang.CATEGORY_GENERAL_LANG;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.getSpawnInfoList;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.openChoiceFormGUI;
+import static fr.pokepixel.pokewiki.gui.DisplayEvo.displayEvoGUI;
 import static fr.pokepixel.pokewiki.gui.DisplaySpawn.displaySpawnGUI;
 import static fr.pokepixel.pokewiki.info.SimpleInfo.*;
 
@@ -76,12 +78,19 @@ public class DisplayInfo {
         long baserate = (Math.round(pokemon.getBaseStats().getCatchRate() / 255.0D * 100.0D));
         double femalepercent = (100 - pokemon.getBaseStats().getMalePercent());
         //translateAlternateColorCodes('&',lang.get("backtoformselection").getString())
+        List<String> ballLore = Lists.newArrayList();
+        ballLore.add(translateAlternateColorCodes('&',langgeneral.get("baserate").getString().replaceFirst("%baserate%",String.valueOf(baserate))));
+        if (pokemon.getGender().equals(Gender.None)){
+            ballLore.add(translateAlternateColorCodes('&',langgeneral.get("genderless").getString()));
+        }else{
+            ballLore.add(translateAlternateColorCodes('&',langgeneral.get("malepercent").getString().replaceFirst("%malepercent",String.valueOf(pokemon.getBaseStats().getMalePercent()))));
+            ballLore.add(translateAlternateColorCodes('&',langgeneral.get("femalepercent").getString().replaceFirst("%femalepercent",String.valueOf(femalepercent))));
+        }
         Button catchrate = GooeyButton.builder()
                 .hideFlags(FlagType.All)
                 .display(new ItemStack(PixelmonItemsPokeballs.pokeBall))
                 .title(translateAlternateColorCodes('&',langgeneral.get("catchrate").getString()))
-                .lore(Lists.newArrayList(translateAlternateColorCodes('&',langgeneral.get("baserate").getString().replaceFirst("%baserate%",String.valueOf(baserate)))
-                        ,translateAlternateColorCodes('&',langgeneral.get("malepercent").getString().replaceFirst("%malepercent",String.valueOf(pokemon.getBaseStats().getMalePercent()))),translateAlternateColorCodes('&',langgeneral.get("femalepercent").getString().replaceFirst("%femalepercent",String.valueOf(femalepercent)))))
+                .lore(ballLore)
                 .build();
 
         boolean hasSpawn = !getSpawnInfoList(pokemon).isEmpty();
@@ -103,11 +112,15 @@ public class DisplayInfo {
                 })
                 .build();
 
+        String evotitle = pokemon.getBaseStats().getEvolutions().size()>0 ? translateAlternateColorCodes('&',langgeneral.get("evo").getString()) : translateAlternateColorCodes('&',langgeneral.get("noevo").getString());
 
         Button evoinfo = GooeyButton.builder()
                 .display(new ItemStack(PixelmonItemsHeld.upGrade))
-                .title(translateAlternateColorCodes('&',langgeneral.get("evo").getString()))
-                .lore(Lists.newArrayList(getInfoEvo(pokemon,langevo)))
+                .hideFlags(FlagType.All)
+                .title(evotitle)
+                .onClick(buttonAction -> {
+                    displayEvoGUI(buttonAction.getPlayer(),pokemon,langevo);
+                })
                 .build();
 
         Button abilityinfo = GooeyButton.builder()

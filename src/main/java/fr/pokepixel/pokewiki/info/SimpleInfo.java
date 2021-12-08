@@ -97,6 +97,7 @@ public class SimpleInfo {
                     formname = " " + form.getLocalizedName();
                 }
                 StringBuilder baseMsg = new StringBuilder("§e"+pokemonevo.getLocalizedName()+formname+": "+translateAlternateColorCodes('&',lang.get("levellingup").getString()));
+                baseMsg.append("§r");
                 //StringBuilder baseMsg = new StringBuilder(TextFormatting.YELLOW + "  " + pokemonevo.getLocalizedName() + formname+ ": " + TextFormatting.GREEN + "Levelling up ");
                 if (evolution instanceof LevelingEvolution) {
                     LevelingEvolution levelingEvolution = (LevelingEvolution) evolution;
@@ -120,13 +121,15 @@ public class SimpleInfo {
                         //baseMsg = new StringBuilder(TextFormatting.YELLOW + "  " + evolution.to.name + formname+ ": " + TextFormatting.LIGHT_PURPLE + "Trading");
                     }
                 }
-
-                evoinfo.add(baseMsg.toString());
+                baseMsg.append("§r");
+                //evoinfo.add(baseMsg.toString());
 
                 if (evolution.conditions != null && !evolution.conditions.isEmpty()) {
                     TextFormatting headingColour = TextFormatting.GOLD;
                     TextFormatting valueColour = TextFormatting.DARK_AQUA;
-                    evoinfo.add(TextFormatting.GOLD + "    " + TextFormatting.UNDERLINE + "Conditions:");
+                    baseMsg.append("\n" + TextFormatting.GOLD + "    " + TextFormatting.UNDERLINE + "Conditions:");
+                    baseMsg.append("§r");
+                    //evoinfo.add(TextFormatting.GOLD + "    " + TextFormatting.UNDERLINE + "Conditions:");
                     for (EvoCondition condition : evolution.conditions) {
                         if (condition instanceof BiomeCondition) {
                             BiomeCondition biomeCondition = (BiomeCondition) condition;
@@ -141,17 +144,25 @@ public class SimpleInfo {
                                     biomes.append(headingColour).append(", ").append(valueColour).append(biomeName);
                                 }
                             }
-                            evoinfo.add("      " + biomes);
+                            //evoinfo.add("      " + biomes);
+                            baseMsg.append("\n"+"      " + biomes);
+                            baseMsg.append("§r");
                         } else if (condition instanceof ChanceCondition) {
                             ChanceCondition chanceCondition = (ChanceCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("chancecondition").getString().replaceFirst("%chance%", String.valueOf(chanceCondition.chance*100)));
-                            evoinfo.add("      " + valueColour + conditiontxt);
+                            //evoinfo.add("      " + valueColour + conditiontxt);
+                            baseMsg.append("\n"+"      " + valueColour + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof EvoRockCondition) {
                             EvoRockCondition evoRockCond = (EvoRockCondition) condition;
                             String evorockcondition = translateAlternateColorCodes('&', lang.get("evorockcondition").getString().replaceFirst("%range%", String.valueOf(Math.sqrt(evoRockCond.maxRangeSquared))).replaceFirst("%rockname%",evoRockCond.evolutionRock.name()));
-                            evoinfo.add("      " + evorockcondition);
+                            //evoinfo.add("      " + evorockcondition);
+                            baseMsg.append("\n"+"      " + evorockcondition);
+                            baseMsg.append("§r");
                         } else if (condition instanceof FriendshipCondition) {
-                            evoinfo.add("      " + translateAlternateColorCodes('&', lang.get("friendshipcondition").getString().replaceFirst("%friendship%", String.valueOf(((FriendshipCondition) condition).friendship))));
+                            //evoinfo.add("      " + translateAlternateColorCodes('&', lang.get("friendshipcondition").getString().replaceFirst("%friendship%", String.valueOf(((FriendshipCondition) condition).friendship))));
+                            baseMsg.append("\n"+"      " + translateAlternateColorCodes('&', lang.get("friendshipcondition").getString().replaceFirst("%friendship%", String.valueOf(((FriendshipCondition) condition).friendship))));
+                            baseMsg.append("§r");
                         } else if (condition instanceof GenderCondition) {
                             GenderCondition genderCondition = (GenderCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("gendercondition").getString().replaceFirst("%gender%", genderCondition.genders.get(0).name()));
@@ -159,25 +170,37 @@ public class SimpleInfo {
                             for (int i = 1; i < genderCondition.genders.size(); i++) {
                                 genders.append(headingColour).append(", ").append(valueColour).append(genderCondition.genders.get(i).name());
                             }
-                            evoinfo.add("      " + genders);
+                            //evoinfo.add("      " + genders);
+                            baseMsg.append("\n"+"      " + genders);
+                            baseMsg.append("§r");
                         } else if (condition instanceof HeldItemCondition) {
                             HeldItemCondition heldItemCondition = (HeldItemCondition) condition;
                             ItemStack stack = heldItemCondition.item.getItemStack();
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("helditemcondition").getString().replaceFirst("%helditem%", (stack == null ? heldItemCondition.item.itemID : stack.getDisplayName())));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof HighAltitudeCondition) {
                             HighAltitudeCondition altitudeCondition = (HighAltitudeCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("abovealtitudecondition").getString().replaceFirst("%altitude%", String.valueOf((int) altitudeCondition.minAltitude)));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof LevelCondition) {
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("levelcondition").getString().replaceFirst("%level%", String.valueOf((((LevelCondition) condition).level))));
-                            evoinfo.add("    " + conditiontxt);
+                            //evoinfo.add("    " + conditiontxt);
+                            baseMsg.append("\n"+"    " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof MoveCondition) {
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("movecondition").getString().replaceFirst("%move%", AttackBase.getAttackBase(((MoveCondition) condition).attackIndex).get().getTranslatedName().getFormattedText()));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof MoveTypeCondition) {
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("movetypecondition").getString().replaceFirst("%movetype%", ((MoveTypeCondition) condition).type.getLocalizedName()));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof PartyCondition) {
                             ArrayList<EnumSpecies> withPokemon = new ArrayList<>();
                             ArrayList<EnumType> withTypes = new ArrayList<>();
@@ -198,7 +221,9 @@ public class SimpleInfo {
                                 for (int i = 1; i < withPokemon.size(); i++) {
                                     pokemonWith.append(headingColour).append(", ").append(valueColour).append(withPokemon.get(i).name);
                                 }
-                                evoinfo.add( pokemonWith.toString());
+                                //evoinfo.add(pokemonWith.toString());
+                                baseMsg.append("\n"+pokemonWith);
+                                baseMsg.append("§r");
                             }
                             if (!withTypes.isEmpty()) {
                                 String conditiontxt = translateAlternateColorCodes('&', lang.get("withtypecondition").getString().replaceFirst("%typelist%", withTypes.get(0).getLocalizedName()));
@@ -206,7 +231,9 @@ public class SimpleInfo {
                                 for (int i = 1; i < withTypes.size(); i++) {
                                     typesWith.append(headingColour).append(", ").append(valueColour).append(withTypes.get(i).getLocalizedName());
                                 }
-                                evoinfo.add(typesWith.toString());
+                                //evoinfo.add(typesWith.toString());
+                                baseMsg.append("\n"+typesWith);
+                                baseMsg.append("§r");
                             }
                             if (!withForms.isEmpty()) {
                                 String conditiontxt = translateAlternateColorCodes('&', lang.get("withformcondition").getString().replaceFirst("%formlist%", withForms.get(0)));
@@ -214,47 +241,69 @@ public class SimpleInfo {
                                 for (int i = 1; i < withForms.size(); i++) {
                                     formsWith.append(headingColour).append(", ").append(valueColour).append(withForms.get(i));
                                 }
-                                evoinfo.add(formsWith.toString());
+                                //evoinfo.add(formsWith.toString());
+                                baseMsg.append("\n"+formsWith);
+                                baseMsg.append("§r");
                             }
                         } else if (condition instanceof StatRatioCondition) {
                             StatRatioCondition statCond = (StatRatioCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("statratiocondition").getString().replaceFirst("%ratio%", String.valueOf(statCond.ratio)).replaceFirst("%stat1%",statCond.stat1.getLocalizedName()).replaceFirst("%stat2%",statCond.stat2.getLocalizedName()));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof TimeCondition) {
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("timecondition").getString().replaceFirst("%time%", (((TimeCondition) condition).time.name())));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         } else if (condition instanceof WeatherCondition) {
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("weathercondition").getString());
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }else if (condition instanceof EvoScrollCondition){
                             EvoScrollCondition evoScrollCondition = (EvoScrollCondition) condition;
                             long value = Math.round(Math.sqrt(evoScrollCondition.maxRangeSquared));
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("scrollcondition").getString().replaceFirst("%scroll%", evoScrollCondition.evolutionScroll.getName()).replaceFirst("%range%",String.valueOf(value)));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }else if (condition instanceof BattleCriticalCondition){
                             BattleCriticalCondition battleCriticalCondition = (BattleCriticalCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("battlecriticalcondition").getString().replaceFirst("%crit%", String.valueOf(battleCriticalCondition.critical)));
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }else if (condition instanceof AbsenceOfHealthCondition){
                             AbsenceOfHealthCondition absenceOfHealthCondition = (AbsenceOfHealthCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("absenceofhealcondition").getString());
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }else if (condition instanceof StatusPersistCondition){
                             StatusPersistCondition statusPersistCondition = (StatusPersistCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("statuspersistcondition").getString());
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }else if (condition instanceof WithinStructureCondition){
                             WithinStructureCondition withinStructureCondition = (WithinStructureCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("withinstructurecondition").getString());
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }else if (condition instanceof NatureCondition){
                             NatureCondition natureCondition = (NatureCondition) condition;
                             String conditiontxt = translateAlternateColorCodes('&', lang.get("naturecondition").getString());
-                            evoinfo.add("      " + conditiontxt);
+                            //evoinfo.add("      " + conditiontxt);
+                            baseMsg.append("\n"+"      " + conditiontxt);
+                            baseMsg.append("§r");
                         }
                     }
                 }
+                evoinfo.add(baseMsg.toString());
             }
+
         }
         return evoinfo;
     }
