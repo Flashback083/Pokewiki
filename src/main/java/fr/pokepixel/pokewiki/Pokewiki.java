@@ -3,6 +3,7 @@ package fr.pokepixel.pokewiki;
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import fr.pokepixel.pokewiki.config.Lang;
+import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -24,7 +25,7 @@ public class Pokewiki {
 
     public static final String MOD_ID = "pokewiki";
     public static final String MOD_NAME = "Pokewiki";
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
 
     public static File directory;
     public static Configuration lang;
@@ -37,7 +38,6 @@ public class Pokewiki {
 
     public static List<String> enPoke = Lists.newArrayList();
     public static List<String> trPoke = Lists.newArrayList();
-
 
     /**
      * This is the first initialization event. Register tile entities here.

@@ -1,6 +1,9 @@
 package fr.pokepixel.pokewiki.info;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.battles.attacks.AttackBase;
@@ -74,16 +77,41 @@ public class SimpleInfo {
 
             String color = getTypeColor(type).toString();
             description.add(TextFormatting.BOLD.toString() + TextFormatting.UNDERLINE + color + type.getLocalizedName());
-
+            List<String> one = Lists.newArrayList();
+            List<String> two = Lists.newArrayList();
+            List<String> three = Lists.newArrayList();
             for (Map.Entry<Block, Integer> entry : blocks.entrySet()) {
-                description.add(color + entry.getKey().getLocalizedName() + " " + entry.getValue());
+                switch (entry.getValue()){
+                    case 1:
+                        one.add(entry.getKey().getLocalizedName());
+                        break;
+                    case 2:
+                        two.add(entry.getKey().getLocalizedName());
+                        break;
+                    case 3:
+                        three.add(entry.getKey().getLocalizedName());
+                        break;
+                }
             }
+            if (!one.isEmpty()){
+                description.add(color + "1 - " + String.join(", ",one));
+            }
+            if (!two.isEmpty()){
+                description.add(color + "2 - " + String.join(", ",two));
+            }
+            if (!three.isEmpty()){
+                description.add(color + "3 - " + String.join(", ",three));
+            }
+            /*for (Map.Entry<Block, Integer> entry : blocks.entrySet()) {
+                description.add(color + entry.getKey().getLocalizedName() + " " + entry.getValue());
+            }*/
         }
         return description;
     }
     
-    public static List<String> getInfoEvo(Pokemon pokemon, ConfigCategory lang){
-        List<String> evoinfo = Lists.newArrayList();
+    public static LinkedHashMultimap<Pokemon,String> getInfoEvo(Pokemon pokemon, ConfigCategory lang){
+        //List<String> evoinfo = Lists.newArrayList();
+        LinkedHashMultimap<Pokemon,String> pokeevo =  LinkedHashMultimap.create();
         //String formname1 = pokemon.getFormEnum().getFormSuffix().isEmpty() ? "-normal" : pokemon.getFormEnum().getFormSuffix();
         if (pokemon.getBaseStats().getEvolutions().size()>0){
             for (Evolution evolution : pokemon.getBaseStats().getEvolutions()) {
@@ -301,11 +329,12 @@ public class SimpleInfo {
                         }
                     }
                 }
-                evoinfo.add(baseMsg.toString());
+                //evoinfo.add(baseMsg.toString());
+                pokeevo.put(pokemonevo,baseMsg.toString());
             }
 
         }
-        return evoinfo;
+        return pokeevo;
     }
 
     public static List<String> getAbilityForPoke(Pokemon pokemon, ConfigCategory lang){

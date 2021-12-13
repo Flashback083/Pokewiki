@@ -2,9 +2,14 @@ package fr.pokepixel.pokewiki.info;
 
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.api.spawning.archetypes.entities.pokemon.SpawnInfoPokemon;
+import com.pixelmonmod.pixelmon.api.world.WeatherType;
+import com.pixelmonmod.pixelmon.api.world.WorldTime;
 import fr.pokepixel.pokewiki.ReflectionHelper;
+import net.minecraft.block.Block;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -12,31 +17,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
+
 public class SpawnDetails {
 
 
-    public static String createPokeDetails(SpawnInfoPokemon spawnInfo){
+    public static String createPokeDetails(SpawnInfoPokemon spawnInfo, ConfigCategory langspawn){
         String txt = "";
-        //Pokemon pokemon = Pixelmon.pokemonFactory.create(spawnInfo.getPokemonSpec());
-        //String form = "";
-        /*if (pokemon.getForm()>0){
-            form = " " + form.concat(pokemon.getSpecies().getFormEnum(pokemon.getForm()).getLocalizedName());
-            //txt.appendText("Form: " + pokemon.getLocalizedName()+ " " + pokemon.getSpecies().getFormEnum(pokemon.getForm()).getLocalizedName()+"\n");
-        }*/
-        /*if (spawnInfo.getPokemonSpec().extraSpecs != null){
-            for (SpecValue<?> extraSpec : spawnInfo.getPokemonSpec().extraSpecs) {
-                System.out.println("Test spec " + extraSpec.key +" and " + extraSpec.value);
-            }
+        if(spawnInfo.locationTypes.size()>0){
+            txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("typeoflocation").getString().replaceFirst("%spawnlocation%",String.join(", ",spawnInfo.stringLocationTypes))) + "\n");
         }
-        if (spawnInfo.specs != null){
-            for (PokemonSpec spec : spawnInfo.specs) {
-                System.out.println("Test spec 04 " + spec);
-            }
-        }
-        System.out.println("Test spec 02" + spawnInfo.getPokemonSpec());*/
-        txt = txt.concat("§eType of spawn location: §6" + String.join(", ",spawnInfo.stringLocationTypes) + "\n");
-        txt = txt.concat("§eMinimum level: §6" + spawnInfo.minLevel + "\n");
-        txt = txt.concat("§eMaximum level: §6" + spawnInfo.maxLevel + "\n");
+        int minlevel = spawnInfo.getPokemonSpec().level != null ? spawnInfo.getPokemonSpec().level : spawnInfo.minLevel;
+        int maxlevel = spawnInfo.getPokemonSpec().level != null ? spawnInfo.getPokemonSpec().level : spawnInfo.maxLevel;
+        txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("minlevel").getString().replaceFirst("%minlevel%",String.valueOf(minlevel))) + "\n");
+        txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("maxlevel").getString().replaceFirst("%maxlevel%",String.valueOf(maxlevel))) + "\n");
         //ReflectionHelper.
         //spawnInfo.species.getBaseStats().getType1().
         if (spawnInfo.heldItems != null){
@@ -44,15 +38,36 @@ public class SpawnDetails {
             spawnInfo.heldItems.forEach(jsonItemStack -> {
                 itemName.add(TextFormatting.DARK_AQUA+jsonItemStack.getItemStack().getDisplayName());
             });
-            txt = txt.concat("§eHeldItems: §6" + String.join(TextFormatting.YELLOW+", ",itemName)+"\n");
+            txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("helditems").getString().replaceFirst("%helditems%",String.join(TextFormatting.YELLOW+", ",itemName))) + "\n");
         }
-        //Biomes
-        txt = txt.concat("§eBiomes: " + getBiomeSpawns(spawnInfo)+"\n");
+
+        if (spawnInfo.condition != null){
+            //Time
+            if (spawnInfo.condition.times != null && !spawnInfo.condition.times.isEmpty()){
+                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("times").getString().replaceFirst("%times%",getTimeSpawns(spawnInfo))) +"\n");
+            }
+            //Weather
+            if (spawnInfo.condition.weathers != null && !spawnInfo.condition.weathers.isEmpty()){
+                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("weathers").getString().replaceFirst("%weathers%",getWeatherSpawns(spawnInfo))) +"\n");
+            }
+            //Biomes
+            if (spawnInfo.condition.biomes != null && !spawnInfo.condition.biomes.isEmpty()){
+                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("biomes").getString().replaceFirst("%biomes%",getBiomeSpawns(spawnInfo))) +"\n");
+            }
+            //Nearby Blocks
+            if (spawnInfo.condition.cachedNeededNearbyBlocks != null && !spawnInfo.condition.cachedNeededNearbyBlocks.isEmpty()){
+                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("nearbyblocks").getString().replaceFirst("%nearbyblocks%",getNearbyBlocksSpawns(spawnInfo))) +"\n");
+            }
+        }
+        /*ForgeRegistries.BLOCKS.forEach(block -> {
+            if (block.getLocalizedName().endsWith(".name")){
+                System.out.println(new ItemStack(block).getDisplayName());
+            }else{
+                System.out.println(block.getLocalizedName());
+            }
+        });*/
         //Rarity
-        txt = txt.concat("§eRarity: §6" + spawnInfo.rarity);
-        //TextComponentString pokeHover = new TextComponentString(TextFormatting.DARK_AQUA+pokemon.getLocalizedName()+form);
-        //pokeHover.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,txt));
-        //oui.getStyle(). setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/pokearena register confirm"));
+        txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("rarity").getString().replaceFirst("%rarity%",String.valueOf(spawnInfo.rarity))) +"\n");
         return txt;
     }
 
@@ -92,40 +107,108 @@ public class SpawnDetails {
         return String.join(TextFormatting.YELLOW+", ",biomeNames);
     }
 
-
-    /*public static String getWorldSpawn(SpawnInfoPokemon info){
-        ArrayList<Integer> allDims = new ArrayList<>();
-        for (WorldServer world : getServer().worlds) {
-            allDims.add(world.provider.getDimension());
+    public static String getTimeSpawns(SpawnInfoPokemon info){
+        ArrayList<WorldTime> allTimes = Lists.newArrayList(WorldTime.values());
+        if (info.condition != null && info.condition.times != null && !info.condition.times.isEmpty()) {
+            allTimes.removeIf(time -> !info.condition.times.contains(time));
         }
-        if (info.condition != null && info.condition.dimensions != null && !info.condition.dimensions.isEmpty()) {
-            allDims.removeIf(id -> !info.condition.dimensions.contains(id));
-        }
-        if (info.anticondition != null && info.anticondition.dimensions != null && !info.anticondition.dimensions.isEmpty()) {
-            allDims.removeIf(id -> info.anticondition.dimensions.contains(id));
+        if (info.anticondition != null && info.anticondition.times != null && !info.anticondition.times.isEmpty()) {
+            allTimes.removeIf(time -> info.anticondition.times.contains(time));
         }
         if (info.compositeCondition != null) {
             if (info.compositeCondition.conditions != null) {
                 info.compositeCondition.conditions.forEach(condition -> {
-                    if (condition.dimensions != null && !condition.dimensions.isEmpty()) {
-                        allDims.removeIf(id -> !condition.dimensions.contains(id));
+                    if (condition.times != null && !condition.times.isEmpty()) {
+                        allTimes.removeIf(time -> !condition.times.contains(time));
                     }
                 });
             }
             if (info.compositeCondition.anticonditions != null) {
                 info.compositeCondition.anticonditions.forEach(anticondition -> {
-                    if (anticondition.dimensions != null && anticondition.dimensions.isEmpty()) {
-                        allDims.removeIf(id -> anticondition.dimensions.contains(id));
+                    if (anticondition.times != null && anticondition.times.isEmpty()) {
+                        allTimes.removeIf(time -> anticondition.times.contains(time));
                     }
                 });
             }
         }
-        Set<Integer> avail = new HashSet<>(allDims);
-        ArrayList<String> dimNames = new ArrayList<>();
-        for (Integer id : avail) {
-            dimNames.add(TextFormatting.DARK_AQUA+getServer().getWorld(id).getWorldInfo().getWorldName());
+        Set<WorldTime> avail = new HashSet<>(allTimes);
+        ArrayList<String> worldTimeNames = new ArrayList<>();
+        for (WorldTime times : avail) {
+            String worldTimeName = times.getLocalizedName();
+            worldTimeNames.add(TextFormatting.DARK_AQUA+worldTimeName);
         }
-        return String.join(TextFormatting.YELLOW+", ",dimNames);
-    }*/
+        return String.join(TextFormatting.YELLOW+", ",worldTimeNames);
+    }
+
+
+    public static String getWeatherSpawns(SpawnInfoPokemon info){
+        ArrayList<WeatherType> allWeathers = Lists.newArrayList(WeatherType.values());
+        if (info.condition != null && info.condition.weathers != null && !info.condition.weathers.isEmpty()) {
+            allWeathers.removeIf(weather -> !info.condition.weathers.contains(weather));
+        }
+        if (info.anticondition != null && info.anticondition.weathers != null && !info.anticondition.weathers.isEmpty()) {
+            allWeathers.removeIf(weather -> info.anticondition.weathers.contains(weather));
+        }
+        if (info.compositeCondition != null) {
+            if (info.compositeCondition.conditions != null) {
+                info.compositeCondition.conditions.forEach(condition -> {
+                    if (condition.weathers != null && !condition.weathers.isEmpty()) {
+                        allWeathers.removeIf(weather -> !condition.weathers.contains(weather));
+                    }
+                });
+            }
+            if (info.compositeCondition.anticonditions != null) {
+                info.compositeCondition.anticonditions.forEach(anticondition -> {
+                    if (anticondition.weathers != null && anticondition.weathers.isEmpty()) {
+                        allWeathers.removeIf(weather -> anticondition.weathers.contains(weather));
+                    }
+                });
+            }
+        }
+        Set<WeatherType> avail = new HashSet<>(allWeathers);
+        ArrayList<String> weatherNames = new ArrayList<>();
+        for (WeatherType weathers : avail) {
+            String weatherName = weathers.getLocalizedName();
+            weatherNames.add(TextFormatting.DARK_AQUA+weatherName);
+        }
+        return String.join(TextFormatting.YELLOW+", ",weatherNames);
+    }
+
+    public static String getNearbyBlocksSpawns(SpawnInfoPokemon info){
+        ArrayList<Block> allBlocks = Lists.newArrayList(ForgeRegistries.BLOCKS);
+        if (info.condition != null && info.condition.cachedNeededNearbyBlocks != null && !info.condition.cachedNeededNearbyBlocks.isEmpty()) {
+            allBlocks.removeIf(blocks -> !info.condition.cachedNeededNearbyBlocks.contains(blocks));
+        }
+        if (info.anticondition != null && info.anticondition.cachedNeededNearbyBlocks != null && !info.anticondition.cachedNeededNearbyBlocks.isEmpty()) {
+            allBlocks.removeIf(block -> info.anticondition.cachedNeededNearbyBlocks.contains(block));
+        }
+        if (info.compositeCondition != null) {
+            if (info.compositeCondition.conditions != null) {
+                info.compositeCondition.conditions.forEach(condition -> {
+                    if (condition.cachedNeededNearbyBlocks != null && !condition.cachedNeededNearbyBlocks.isEmpty()) {
+                        allBlocks.removeIf(block -> !condition.cachedNeededNearbyBlocks.contains(block));
+                    }
+                });
+            }
+            if (info.compositeCondition.anticonditions != null) {
+                info.compositeCondition.anticonditions.forEach(anticondition -> {
+                    if (anticondition.cachedNeededNearbyBlocks != null && anticondition.cachedNeededNearbyBlocks.isEmpty()) {
+                        allBlocks.removeIf(block -> anticondition.cachedNeededNearbyBlocks.contains(block));
+                    }
+                });
+            }
+        }
+        Set<Block> avail = new HashSet<>(allBlocks);
+        ArrayList<String> blocksName = new ArrayList<>();
+        for (Block block : avail) {
+            /*if (block.getLocalizedName().endsWith(".name")){
+                blocksName.add(TextFormatting.DARK_AQUA+new ItemStack(block).getDisplayName());
+            }else{
+
+            }*/
+            blocksName.add(TextFormatting.DARK_AQUA+block.getLocalizedName());
+        }
+        return String.join(TextFormatting.YELLOW+", ",blocksName);
+    }
 
 }

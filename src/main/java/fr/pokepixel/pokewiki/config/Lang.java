@@ -32,9 +32,14 @@ public class Lang {
     private static String maxlevel = "&eMaximum level: &6%maxlevel%";
     private static String helditems = "&eHeld items: &6%helditems%";
     private static String biomes = "&eBiomes: %biomes%";
+    private static String nearbyblocks = "&eNearby blocks: %nearbyblocks%";
     private static String rarity = "&eRarity: %rarity%";
+    private static String weathers = "&eWeather: %weathers%";
+    private static String times = "&eTimes: %times%";
+
 
     public static final String CATEGORY_EVO_LANG = "Evolution lang config";
+    private static String back2 = "&cBack:";
     private static String levellingup = "&aLevelling up ";
     private static String levelnumber = "&ato level %level%";
     private static String exposedtoitem = "&bWhen exposed to %item%";
@@ -106,16 +111,20 @@ public class Lang {
     private static void initSpawnConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_SPAWN_LANG, "Spawn Language configuration");
         back = cfg.getString("back", CATEGORY_SPAWN_LANG, back, "&cBack:");
-        typeoflocation = cfg.getString("typeoflocation", CATEGORY_SPAWN_LANG, typeoflocation, "&eType of spawn location: &6%spawnlocation");
+        typeoflocation = cfg.getString("typeoflocation", CATEGORY_SPAWN_LANG, typeoflocation, "&eType of spawn location: &6%spawnlocation%");
         minlevel = cfg.getString("minlevel", CATEGORY_SPAWN_LANG, minlevel, "&eMinimum level: &6%minlevel%");
         maxlevel = cfg.getString("maxlevel", CATEGORY_SPAWN_LANG, maxlevel, "&eMaximum level: &6%maxlevel%");
         helditems = cfg.getString("helditems", CATEGORY_SPAWN_LANG, helditems, "&eHeld items: &6%helditems%");
         biomes = cfg.getString("biomes", CATEGORY_SPAWN_LANG, biomes, "&eBiomes: %biomes%");
+        nearbyblocks = cfg.getString("nearbyblocks", CATEGORY_SPAWN_LANG, nearbyblocks, "&eNearby blocks: %nearbyblocks%");
         rarity = cfg.getString("rarity", CATEGORY_SPAWN_LANG, rarity, "&eRarity: %rarity%");
+        weathers = cfg.getString("weathers", CATEGORY_SPAWN_LANG, weathers, "&eWeathers: %wheathers%");
+        times = cfg.getString("times", CATEGORY_SPAWN_LANG, times, "&eTime: %times%");
     }
 
     private static void initEvoConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_EVO_LANG, "Evo Language configuration");
+        back2 = cfg.getString("back2", CATEGORY_EVO_LANG, back2, "&cBack:");
         levellingup = cfg.getString("levellingup", CATEGORY_EVO_LANG, levellingup, "&e%pokemoname%: &aLevelling up");
         levelnumber = cfg.getString("levelnumber", CATEGORY_EVO_LANG, levelnumber, "&ato level %level%");
         exposedtoitem = cfg.getString("exposedtoitem", CATEGORY_EVO_LANG, exposedtoitem, "&bWhen exposed to %item%");

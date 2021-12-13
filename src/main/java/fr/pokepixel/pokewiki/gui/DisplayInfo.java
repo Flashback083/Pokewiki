@@ -25,8 +25,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 import java.util.List;
 
 import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
-import static fr.pokepixel.pokewiki.config.Lang.CATEGORY_EVO_LANG;
-import static fr.pokepixel.pokewiki.config.Lang.CATEGORY_GENERAL_LANG;
+import static fr.pokepixel.pokewiki.config.Lang.*;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.getSpawnInfoList;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.openChoiceFormGUI;
 import static fr.pokepixel.pokewiki.gui.DisplayEvo.displayEvoGUI;
@@ -39,14 +38,24 @@ public class DisplayInfo {
     public static void displayInfoGUI(EntityPlayerMP player, Pokemon pokemon){
         ConfigCategory langgeneral = Pokewiki.lang.getCategory(CATEGORY_GENERAL_LANG);
         ConfigCategory langevo = Pokewiki.lang.getCategory(CATEGORY_EVO_LANG);
+        ConfigCategory langspawn = Pokewiki.lang.getCategory(CATEGORY_SPAWN_LANG);
         boolean hasForm =  pokemon.getSpecies().getPossibleForms(false).size()>1;
         List<String> spriteForm = Lists.newArrayList();
         if (hasForm){
             spriteForm.add(translateAlternateColorCodes('&',langgeneral.get("backtoformselection").getString()));
         }
 
+        String formname = "";
+        if (!pokemon.getFormEnum().getFormSuffix().isEmpty() && !pokemon.getFormEnum().getFormSuffix().equalsIgnoreCase("-normal")){
+            formname = pokemon.getFormEnum().getLocalizedName();
+        }else{
+            if (pokemon.getFormEnum().getUnlocalizedName().contains("battle_bond")){
+                formname = pokemon.getFormEnum().getLocalizedName();
+            }
+        }
+
         Button pokesprite = GooeyButton.builder()
-                .title("§6"+pokemon.getLocalizedName())
+                .title("§6"+pokemon.getLocalizedName() + " "  + formname)
                 .display(ItemPixelmonSprite.getPhoto(pokemon))
                 .lore(spriteForm)
                 .onClick(buttonAction -> {
@@ -107,7 +116,7 @@ public class DisplayInfo {
                 .lore(loreSpawn)
                 .onClick(buttonAction -> {
                     if (hasSpawn){
-                        displaySpawnGUI(buttonAction.getPlayer(),pokemon);
+                        displaySpawnGUI(buttonAction.getPlayer(),pokemon,langspawn);
                     }
                 })
                 .build();
@@ -119,7 +128,9 @@ public class DisplayInfo {
                 .hideFlags(FlagType.All)
                 .title(evotitle)
                 .onClick(buttonAction -> {
-                    displayEvoGUI(buttonAction.getPlayer(),pokemon,langevo);
+                    if (pokemon.getBaseStats().getEvolutions().size()>0){
+                        displayEvoGUI(buttonAction.getPlayer(),pokemon,langevo);
+                    }
                 })
                 .build();
 

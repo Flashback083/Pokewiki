@@ -12,6 +12,7 @@ import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.template.LineType;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.google.common.collect.Lists;
+import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.api.spawning.archetypes.entities.pokemon.SpawnInfoPokemon;
 import com.pixelmonmod.pixelmon.config.PixelmonItems;
@@ -20,19 +21,21 @@ import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
 
+import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.getSpawnInfoList;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
 import static fr.pokepixel.pokewiki.info.SpawnDetails.createPokeDetails;
 
 public class DisplaySpawn {
 
-    public static void displaySpawnGUI(EntityPlayerMP player, Pokemon pokemon){
+    public static void displaySpawnGUI(EntityPlayerMP player, Pokemon pokemon, ConfigCategory langspawn){
 
         Button ejectbutton = GooeyButton.builder()
-                .title("§cBack")
+                .title(translateAlternateColorCodes('&',langspawn.get("back").getString()))
                 .display(new ItemStack(PixelmonItemsHeld.ejectButton))
                 .hideFlags(FlagType.All)
                 .onClick(buttonAction -> {
@@ -82,20 +85,29 @@ public class DisplaySpawn {
                 .title("Spawn Info");
 
         //Make this offthread
-        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, getSpawnInfos(pokemon), page);
+        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, getSpawnInfos(pokemon,langspawn), page);
         UIManager.openUIForcefully(player, firstPage);
 
     }
 
 
-    public static List<Button> getSpawnInfos(Pokemon pokemon){
+    public static List<Button> getSpawnInfos(Pokemon pokemon, ConfigCategory langspawn){
         List<Button> buttonList = Lists.newArrayList();
         List<SpawnInfoPokemon> spawnInfoPokemonList = Lists.newArrayList(getSpawnInfoList(pokemon));
         spawnInfoPokemonList.forEach(spawnInfoPokemon -> {
+            Pokemon pokespawn = spawnInfoPokemon.getPokemonSpec().create();
+            String formname = "";
+            if (!pokemon.getFormEnum().getFormSuffix().isEmpty() && !pokemon.getFormEnum().getFormSuffix().equalsIgnoreCase("-normal")){
+                formname = pokemon.getFormEnum().getLocalizedName();
+            }else{
+                if (pokemon.getFormEnum().getUnlocalizedName().contains("battle_bond")){
+                    formname = pokemon.getFormEnum().getLocalizedName();
+                }
+            }
             buttonList.add(GooeyButton.builder()
-                    .display(ItemPixelmonSprite.getPhoto(pokemon))
-                            .title("§a"+pokemon.getLocalizedName())
-                            .lore(Lists.newArrayList(createPokeDetails(spawnInfoPokemon)))
+                    .display(ItemPixelmonSprite.getPhoto(pokespawn))
+                    .title("§6"+pokemon.getLocalizedName() + " "  + formname)
+                    .lore(Lists.newArrayList(createPokeDetails(spawnInfoPokemon,langspawn)))
                     .build());
         });
         return buttonList;

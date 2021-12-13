@@ -11,6 +11,7 @@ import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
 import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.template.LineType;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
+import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.config.PixelmonItems;
@@ -23,6 +24,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
 
+import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
 import static fr.pokepixel.pokewiki.info.SimpleInfo.getInfoEvo;
 
@@ -31,7 +33,7 @@ public class DisplayEvo {
     public static void displayEvoGUI(EntityPlayerMP player, Pokemon pokemon, ConfigCategory langevo){
 
         Button ejectbutton = GooeyButton.builder()
-                .title("§cBack")
+                .title(translateAlternateColorCodes('&',langevo.get("back2").getString()))
                 .display(new ItemStack(PixelmonItemsHeld.ejectButton))
                 .hideFlags(FlagType.All)
                 .onClick(buttonAction -> {
@@ -89,10 +91,10 @@ public class DisplayEvo {
 
     public static List<Button> getEvoInfos(Pokemon pokemon, ConfigCategory langevo){
         List<Button> buttonList = Lists.newArrayList();
-        List<String> listevo = getInfoEvo(pokemon, langevo);
-        ItemStack item = ItemPixelmonSprite.getPhoto(pokemon);
+        LinkedHashMultimap<Pokemon, String> listevo = getInfoEvo(pokemon, langevo);
         String name = pokemon.getLocalizedName();
-        listevo.forEach(evo -> {
+        listevo.forEach((poketoevo, evo) -> {
+            ItemStack item = ItemPixelmonSprite.getPhoto(poketoevo);
             buttonList.add(GooeyButton.builder()
                     .display(item)
                     .title("§a"+name)
