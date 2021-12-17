@@ -98,6 +98,9 @@ public class DisplayEvo {
             buttonList.add(GooeyButton.builder()
                     .display(item)
                     .title("§a"+name)
+                    .onClick(buttonAction -> {
+                        displayInfoGUI(buttonAction.getPlayer(),poketoevo);
+                    })
                     .lore(Lists.newArrayList(evo))
                     .build());
         });

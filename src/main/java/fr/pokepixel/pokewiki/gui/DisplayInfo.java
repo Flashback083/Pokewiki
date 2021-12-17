@@ -9,10 +9,7 @@ import ca.landonjw.gooeylibs2.api.template.LineType;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
-import com.pixelmonmod.pixelmon.config.PixelmonItems;
-import com.pixelmonmod.pixelmon.config.PixelmonItemsBadges;
-import com.pixelmonmod.pixelmon.config.PixelmonItemsHeld;
-import com.pixelmonmod.pixelmon.config.PixelmonItemsPokeballs;
+import com.pixelmonmod.pixelmon.config.*;
 import com.pixelmonmod.pixelmon.entities.pixelmon.stats.Gender;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import fr.pokepixel.pokewiki.Pokewiki;
@@ -154,6 +151,13 @@ public class DisplayInfo {
                 .lore(Lists.newArrayList(getDrops(pokemon.getSpecies())))
                 .build();
 
+        Button movebylevelinfo = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsTMs.gen1TM)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("movesbylevel").getString()))
+                .lore(Lists.newArrayList(getMovesByLevel(pokemon.getSpecies())))
+                .build();
+
         ChestTemplate template = ChestTemplate.builder(5)
                 .rectangle(0,0,2,9,redglass)
                 .line(LineType.HORIZONTAL,2,0,9,blackglass)
@@ -166,6 +170,7 @@ public class DisplayInfo {
                 .set(2,1,pokesprite)
                 .set(2,3,breedinfo)
                 .set(2,4,dropinfo)
+                .set(2,5,movebylevelinfo)
                 .build();
 
         LinkedPage page = LinkedPage.builder()

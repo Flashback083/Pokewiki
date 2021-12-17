@@ -24,6 +24,7 @@ public class Lang {
     private static String hiddenability = "&6%hiddenability% (Hidden)";
     private static String breed = "&bBreed:";
     private static String drops = "&bDrops:";
+    private static String movesbylevel = "&bMoves by level:";
 
     public static final String CATEGORY_SPAWN_LANG = "Spawn lang config";
     private static String back = "&cBack:";
@@ -106,6 +107,8 @@ public class Lang {
         hiddenability = cfg.getString("hiddenability", CATEGORY_GENERAL_LANG, hiddenability, "&6%hiddenability% (Hidden)");
         breed = cfg.getString("breed", CATEGORY_GENERAL_LANG, breed, "&bBreed:");
         drops = cfg.getString("drops", CATEGORY_GENERAL_LANG, drops, "&bDrops:");
+        movesbylevel = cfg.getString("movesbylevel", CATEGORY_GENERAL_LANG, movesbylevel, "&bMoves by level:");
+
     }
 
     private static void initSpawnConfig(Configuration cfg) {

@@ -168,7 +168,7 @@ public class SpawnDetails {
         Set<WeatherType> avail = new HashSet<>(allWeathers);
         ArrayList<String> weatherNames = new ArrayList<>();
         for (WeatherType weathers : avail) {
-            String weatherName = weathers.getLocalizedName();
+            String weatherName = weathers.name();
             weatherNames.add(TextFormatting.DARK_AQUA+weatherName);
         }
         return String.join(TextFormatting.YELLOW+", ",weatherNames);

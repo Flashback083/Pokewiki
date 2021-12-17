@@ -60,6 +60,19 @@ public class SimpleInfo {
         return description.isEmpty() ? NONE : description;
     }
 
+    public static List<String> getMovesByLevel(EnumSpecies species) {
+        List<String> description = new ArrayList<>();
+        TreeMap<Integer, List<AttackBase>> moves = new TreeMap<>(species.getBaseStats().getLevelupMoves());
+        moves.forEach((integer, attackBases) -> {
+            List<String> atkName = Lists.newArrayList();
+            attackBases.forEach(attackBase -> {
+                atkName.add(attackBase.getLocalizedName());
+            });
+            description.add("§6"+integer + " - " + String.join(",",atkName));
+        });
+        return description;
+    }
+
     public static List<String> getBreeding(BaseStats stats) {
         EnumMap<EnumType, HashMap<Block, Integer>> typeBlockList = ReflectionHelper.getBreedingTypeList().orElse(null);
         if (typeBlockList == null) {
