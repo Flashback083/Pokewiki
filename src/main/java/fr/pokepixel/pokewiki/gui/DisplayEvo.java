@@ -91,7 +91,7 @@ public class DisplayEvo {
 
     public static List<Button> getEvoInfos(Pokemon pokemon, ConfigCategory langevo){
         List<Button> buttonList = Lists.newArrayList();
-        LinkedHashMultimap<Pokemon, String> listevo = getInfoEvo(pokemon, langevo);
+        LinkedHashMultimap<Pokemon, List<String>> listevo = getInfoEvo(pokemon, langevo);
         String name = pokemon.getLocalizedName();
         listevo.forEach((poketoevo, evo) -> {
             ItemStack item = ItemPixelmonSprite.getPhoto(poketoevo);
@@ -101,7 +101,7 @@ public class DisplayEvo {
                     .onClick(buttonAction -> {
                         displayInfoGUI(buttonAction.getPlayer(),poketoevo);
                     })
-                    .lore(Lists.newArrayList(evo))
+                    .lore(evo)
                     .build());
         });
         return buttonList;

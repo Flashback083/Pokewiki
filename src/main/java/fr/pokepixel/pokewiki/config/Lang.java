@@ -9,6 +9,7 @@ public class Lang {
     private static String backtoformselection = "&bClick to go back to form selection";
     private static String pokemontype = "&bType:";
     private static String egggroups = "&bEgg group: %egggroups%";
+    private static String eggsteps = "&bEggsteps needed: %eggsteps%";
     private static String evo = "&bClick to see the evolutions:";
     private static String noevo = "&cThere is no evolution for this pokemon!";
     private static String spawninfos = "&bSpawn infos:";
@@ -25,6 +26,13 @@ public class Lang {
     private static String breed = "&bBreed:";
     private static String drops = "&bDrops:";
     private static String movesbylevel = "&bMoves by level:";
+    private static String typeeffectiveness = "&bType effectiveness:";
+    private static String basestats = "&bBase Stats:";
+    private static String evyield = "&bEV Yield:";
+    private static String tutormoves = "&bTutor Moves:";
+    private static String tmhmmoves = "&bTM/HM Moves:";
+    private static String trmoves = "&bTR Moves:";
+    private static String eggmoves = "&bEgg Moves:";
 
     public static final String CATEGORY_SPAWN_LANG = "Spawn lang config";
     private static String back = "&cBack:";
@@ -63,11 +71,13 @@ public class Lang {
     private static String weathercondition = "&bWith weather: Rain";
     private static String scrollcondition = "&bWith Scroll: %scroll% at range %range%";
     private static String battlecriticalcondition = "&bWith critical: %crit%";
+    private static String recoildamagecondition = "&bWith Recoil damage: %recoil%";
+    private static String naturecondition = "&bWith nature: %natures%";
 
     private static String absenceofhealcondition = "&bWith Health absence: (WIP)";
     private static String statuspersistcondition = "&bWith Status: (WIP)";
     private static String withinstructurecondition = "&bWithin Structure: (WIP)";
-    private static String naturecondition = "&bWith nature: (WIP)";
+
 
 
     public static void readConfig() {
@@ -92,6 +102,7 @@ public class Lang {
         backtoformselection = cfg.getString("backtoformselection", CATEGORY_GENERAL_LANG, backtoformselection, "&bClick to go back to form selection");
         pokemontype = cfg.getString("pokemontype", CATEGORY_GENERAL_LANG, pokemontype, "&bType:");
         egggroups = cfg.getString("egggroups", CATEGORY_GENERAL_LANG, egggroups, "&bEgg groups: %egggroups%");
+        eggsteps = cfg.getString("eggsteps", CATEGORY_GENERAL_LANG, eggsteps, "&bEggsteps needed: %eggsteps%");
         evo = cfg.getString("evo", CATEGORY_GENERAL_LANG, evo, "&bClick to see the evolutions:");
         noevo = cfg.getString("noevo", CATEGORY_GENERAL_LANG, noevo, "&cThere is no evolution for this pokemon!");
         spawninfos = cfg.getString("spawninfos", CATEGORY_GENERAL_LANG, spawninfos,  "&bSpawn infos:");
@@ -108,6 +119,13 @@ public class Lang {
         breed = cfg.getString("breed", CATEGORY_GENERAL_LANG, breed, "&bBreed:");
         drops = cfg.getString("drops", CATEGORY_GENERAL_LANG, drops, "&bDrops:");
         movesbylevel = cfg.getString("movesbylevel", CATEGORY_GENERAL_LANG, movesbylevel, "&bMoves by level:");
+        typeeffectiveness = cfg.getString("typeeffectiveness", CATEGORY_GENERAL_LANG, typeeffectiveness, "&bType effectiveness:");
+        basestats = cfg.getString("basestats", CATEGORY_GENERAL_LANG, basestats, "&bType effectiveness:");
+        evyield = cfg.getString("evyield", CATEGORY_GENERAL_LANG, evyield, "&bEV Yield:");
+        tutormoves = cfg.getString("tutormoves", CATEGORY_GENERAL_LANG, tutormoves, "&bTutor Moves:");
+        tmhmmoves = cfg.getString("tmhmmoves", CATEGORY_GENERAL_LANG, tmhmmoves, "&bTM/HM Moves:");
+        trmoves = cfg.getString("trmoves", CATEGORY_GENERAL_LANG, trmoves, "&bTR Moves:");
+        eggmoves = cfg.getString("eggmoves", CATEGORY_GENERAL_LANG, eggmoves, "&bEgg Moves:");
 
     }
 
@@ -150,10 +168,12 @@ public class Lang {
         weathercondition = cfg.getString("weathercondition", CATEGORY_EVO_LANG, weathercondition, "&bWith weather: Rain");
         scrollcondition = cfg.getString("scrollcondition", CATEGORY_EVO_LANG, scrollcondition, "&bWith Scroll: %scroll% at range %range%");
         battlecriticalcondition = cfg.getString("battlecriticalcondition", CATEGORY_EVO_LANG, battlecriticalcondition, "&bWith critical: %crit%");
+        recoildamagecondition = cfg.getString("recoildamagecondition", CATEGORY_EVO_LANG, recoildamagecondition, "&bWith Recoil damage: %recoil%");
+        naturecondition = cfg.getString("naturecondition", CATEGORY_EVO_LANG, naturecondition, "&bWith nature: %natures%");
+
         absenceofhealcondition = cfg.getString("absenceofhealcondition", CATEGORY_EVO_LANG, absenceofhealcondition, "&bWith Health absence: (WIP)");
         statuspersistcondition = cfg.getString("statuspersistcondition", CATEGORY_EVO_LANG, statuspersistcondition,"&bWith Status: (WIP)");
         withinstructurecondition = cfg.getString("withinstructurecondition", CATEGORY_EVO_LANG, withinstructurecondition, "&bWithin Structure: (WIP)");
-        naturecondition = cfg.getString("naturecondition", CATEGORY_EVO_LANG, naturecondition, "&bWith nature: (WIP)");
 
     }
 

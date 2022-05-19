@@ -21,8 +21,10 @@ import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
 
+import static fr.pokepixel.pokewiki.Pokewiki.customSpawnPokemonInfoListInfo;
 import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
 import static fr.pokepixel.pokewiki.config.Lang.*;
+import static fr.pokepixel.pokewiki.config.Utils.canSpawnCustom;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.getSpawnInfoList;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.openChoiceFormGUI;
 import static fr.pokepixel.pokewiki.gui.DisplayEvo.displayEvoGUI;
@@ -78,7 +80,7 @@ public class DisplayInfo {
                 .hideFlags(FlagType.All)
                 .display(new ItemStack(PixelmonItemsBadges.marshBadge))
                 .title(translateAlternateColorCodes('&',langgeneral.get("pokemontype").getString()))
-                .lore(Lists.newArrayList(getType(pokemon),getEggGroup(pokemon.getBaseStats(),langgeneral)))
+                .lore(Lists.newArrayList(getType(pokemon),getEggGroup(pokemon.getBaseStats(),langgeneral),getEggSteps(pokemon,langgeneral)))
                 .build();
 
         long baserate = (Math.round(pokemon.getBaseStats().getCatchRate() / 255.0D * 100.0D));
@@ -99,7 +101,7 @@ public class DisplayInfo {
                 .lore(ballLore)
                 .build();
 
-        boolean hasSpawn = !getSpawnInfoList(pokemon).isEmpty();
+        boolean hasSpawn = !getSpawnInfoList(pokemon).isEmpty() || canSpawnCustom(pokemon);
         List<String> loreSpawn = Lists.newArrayList();
         if (hasSpawn){
             loreSpawn.add(translateAlternateColorCodes('&',langgeneral.get("lorespawninfo1").getString()));
@@ -158,6 +160,56 @@ public class DisplayInfo {
                 .lore(Lists.newArrayList(getMovesByLevel(pokemon.getSpecies())))
                 .build();
 
+        Button typeeffectiveness = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsBadges.rumbleBadge)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("typeeffectiveness").getString()))
+                .lore(Lists.newArrayList(getTypeEffectiveness(pokemon)))
+                .build();
+
+        Button basestats = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsHeld.weaknessPolicy)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("basestats").getString()))
+                .lore(Lists.newArrayList(getBaseStats(pokemon.getBaseStats())))
+                .build();
+
+        Button evyield = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsHeld.powerWeight)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("evyield").getString()))
+                .lore(Lists.newArrayList(getEVYield(pokemon.getBaseStats())))
+                .build();
+
+        Button movebytutor = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsTMs.gen1TM)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("tutormoves").getString()))
+                .lore(Lists.newArrayList(getTutorMoves(pokemon.getBaseStats())))
+                .build();
+
+        Button tmhmmoves = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsTMs.gen1TM)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("tmhmmoves").getString()))
+                .lore(Lists.newArrayList(getTMHMMoves(pokemon.getBaseStats())))
+                .build();
+
+        Button trmoves = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsTMs.gen1TM)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("trmoves").getString()))
+                .lore(Lists.newArrayList(getTRMoves(pokemon.getBaseStats())))
+                .build();
+
+        Button eggmoves = GooeyButton.builder()
+                .display(new ItemStack((PixelmonItemsTMs.gen1TM)))
+                .hideFlags(FlagType.All)
+                .title(translateAlternateColorCodes('&',langgeneral.get("eggmoves").getString()))
+                .lore(Lists.newArrayList(getBreedingMoves(pokemon.getBaseStats())))
+                .build();
+
+
         ChestTemplate template = ChestTemplate.builder(5)
                 .rectangle(0,0,2,9,redglass)
                 .line(LineType.HORIZONTAL,2,0,9,blackglass)
@@ -170,7 +222,14 @@ public class DisplayInfo {
                 .set(2,1,pokesprite)
                 .set(2,3,breedinfo)
                 .set(2,4,dropinfo)
-                .set(2,5,movebylevelinfo)
+                .set(2,5,evyield)
+                .set(2,6,typeeffectiveness)
+                .set(2,7,basestats)
+                .set(3,3,movebylevelinfo)
+                .set(3,4,movebytutor)
+                .set(3,5,tmhmmoves)
+                .set(3,6,trmoves)
+                .set(3,7,eggmoves)
                 .build();
 
         LinkedPage page = LinkedPage.builder()

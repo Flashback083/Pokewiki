@@ -1,8 +1,10 @@
-package fr.pokepixel.pokewiki;
+package fr.pokepixel.pokewiki.cmds;
 
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.enums.EnumSpecies;
+import fr.pokepixel.pokewiki.Pokewiki;
+import fr.pokepixel.pokewiki.config.Config;
 import fr.pokepixel.pokewiki.config.Lang;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -16,9 +18,11 @@ import java.util.List;
 
 import static fr.pokepixel.pokewiki.Pokewiki.enPoke;
 import static fr.pokepixel.pokewiki.Pokewiki.trPoke;
+import static fr.pokepixel.pokewiki.config.GsonUtils.getAllCustom;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.openChoiceFormGUI;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
 import static net.minecraftforge.server.permission.PermissionAPI.hasPermission;
+import static fr.pokepixel.pokewiki.Pokewiki.customSpawnPokemonInfoListInfo;
 
 public class UserCmd extends CommandBase {
 
@@ -54,7 +58,14 @@ public class UserCmd extends CommandBase {
                     cfglang.save();
                 }
                 cfglang.load();
-                sender.sendMessage(new TextComponentString("§aLang reloaded!"));
+                Configuration cfggen = Pokewiki.config;
+                Config.readConfig();
+                if (cfggen.hasChanged()) {
+                    cfggen.save();
+                }
+                cfggen.load();
+                customSpawnPokemonInfoListInfo = getAllCustom();
+                sender.sendMessage(new TextComponentString("§aConfig and Lang reloaded!"));
             }else{
                 EntityPlayerMP player = (EntityPlayerMP) sender;
                 if (EnumSpecies.getFromNameAnyCase(args[0]) != null){

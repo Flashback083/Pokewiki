@@ -22,15 +22,16 @@ import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCode
 public class SpawnDetails {
 
 
-    public static String createPokeDetails(SpawnInfoPokemon spawnInfo, ConfigCategory langspawn){
-        String txt = "";
+    public static List<String> createPokeDetails(SpawnInfoPokemon spawnInfo, ConfigCategory langspawn){
+        List<String> txt = Lists.newArrayList();
+        //String txt = "";
         if(spawnInfo.locationTypes.size()>0){
-            txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("typeoflocation").getString().replaceFirst("%spawnlocation%",String.join(", ",spawnInfo.stringLocationTypes))) + "\n");
+            txt.add(translateAlternateColorCodes('&',langspawn.get("typeoflocation").getString().replaceFirst("%spawnlocation%",String.join(", ",spawnInfo.stringLocationTypes))));
         }
         int minlevel = spawnInfo.getPokemonSpec().level != null ? spawnInfo.getPokemonSpec().level : spawnInfo.minLevel;
         int maxlevel = spawnInfo.getPokemonSpec().level != null ? spawnInfo.getPokemonSpec().level : spawnInfo.maxLevel;
-        txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("minlevel").getString().replaceFirst("%minlevel%",String.valueOf(minlevel))) + "\n");
-        txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("maxlevel").getString().replaceFirst("%maxlevel%",String.valueOf(maxlevel))) + "\n");
+        txt.add(translateAlternateColorCodes('&',langspawn.get("minlevel").getString().replaceFirst("%minlevel%",String.valueOf(minlevel))));
+        txt.add(translateAlternateColorCodes('&',langspawn.get("maxlevel").getString().replaceFirst("%maxlevel%",String.valueOf(maxlevel))));
         //ReflectionHelper.
         //spawnInfo.species.getBaseStats().getType1().
         if (spawnInfo.heldItems != null){
@@ -38,25 +39,25 @@ public class SpawnDetails {
             spawnInfo.heldItems.forEach(jsonItemStack -> {
                 itemName.add(TextFormatting.DARK_AQUA+jsonItemStack.getItemStack().getDisplayName());
             });
-            txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("helditems").getString().replaceFirst("%helditems%",String.join(TextFormatting.YELLOW+", ",itemName))) + "\n");
+            txt.add(translateAlternateColorCodes('&',langspawn.get("helditems").getString().replaceFirst("%helditems%",String.join(TextFormatting.YELLOW+", ",itemName))));
         }
 
         if (spawnInfo.condition != null){
             //Time
             if (spawnInfo.condition.times != null && !spawnInfo.condition.times.isEmpty()){
-                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("times").getString().replaceFirst("%times%",getTimeSpawns(spawnInfo))) +"\n");
+                txt.add(translateAlternateColorCodes('&',langspawn.get("times").getString().replaceFirst("%times%",getTimeSpawns(spawnInfo))));
             }
             //Weather
             if (spawnInfo.condition.weathers != null && !spawnInfo.condition.weathers.isEmpty()){
-                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("weathers").getString().replaceFirst("%weathers%",getWeatherSpawns(spawnInfo))) +"\n");
+                txt.add(translateAlternateColorCodes('&',langspawn.get("weathers").getString().replaceFirst("%weathers%",getWeatherSpawns(spawnInfo))));
             }
             //Biomes
             if (spawnInfo.condition.biomes != null && !spawnInfo.condition.biomes.isEmpty()){
-                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("biomes").getString().replaceFirst("%biomes%",getBiomeSpawns(spawnInfo))) +"\n");
+                txt.add(translateAlternateColorCodes('&',langspawn.get("biomes").getString().replaceFirst("%biomes%",getBiomeSpawns(spawnInfo))));
             }
             //Nearby Blocks
             if (spawnInfo.condition.cachedNeededNearbyBlocks != null && !spawnInfo.condition.cachedNeededNearbyBlocks.isEmpty()){
-                txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("nearbyblocks").getString().replaceFirst("%nearbyblocks%",getNearbyBlocksSpawns(spawnInfo))) +"\n");
+                txt.add(translateAlternateColorCodes('&',langspawn.get("nearbyblocks").getString().replaceFirst("%nearbyblocks%",getNearbyBlocksSpawns(spawnInfo))));
             }
         }
         /*ForgeRegistries.BLOCKS.forEach(block -> {
@@ -67,7 +68,7 @@ public class SpawnDetails {
             }
         });*/
         //Rarity
-        txt = txt.concat(translateAlternateColorCodes('&',langspawn.get("rarity").getString().replaceFirst("%rarity%",String.valueOf(spawnInfo.rarity))) +"\n");
+        txt.add(translateAlternateColorCodes('&',langspawn.get("rarity").getString().replaceFirst("%rarity%",String.valueOf(spawnInfo.rarity))));
         return txt;
     }
 

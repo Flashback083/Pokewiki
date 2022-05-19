@@ -129,7 +129,7 @@ public class ChoiceForm {
             for (SpawnInfo info : set.spawnInfos) {
                 if (info instanceof SpawnInfoPokemon) {
                     SpawnInfoPokemon spawnInfoPokemon = (SpawnInfoPokemon) info;
-                    if (spawnInfoPokemon.getPokemonSpec().name.equalsIgnoreCase(pokemon.getSpecies().getPokemonName())){
+                    if (spawnInfoPokemon.getPokemonSpec().name.equalsIgnoreCase(pokemon.getSpecies().getPokemonName()) && spawnInfoPokemon.rarity>0f){
                         if (spawnInfoPokemon.getPokemonSpec().form != null){
                             if (spawnInfoPokemon.getPokemonSpec().form <= 0 && pokemon.getForm()<=0) {
                                 spawnInfoPokemonList.add(spawnInfoPokemon);
@@ -141,14 +141,6 @@ public class ChoiceForm {
                         }else{
                             spawnInfoPokemonList.add(spawnInfoPokemon);
                         }
-                        /*if (spawnInfoPokemon.getPokemonSpec().form != null) {
-                            if (spawnInfoPokemon.getPokemonSpec().form <= 0 && pokemon.getForm()<=0) {
-                                pokemon.setForm(spawnInfoPokemon.getPokemonSpec().form);
-                            }
-                        }
-                        if (spawnInfoPokemon.getPokemonSpec().matches(pokemon)){
-                            spawnInfoPokemonList.add(spawnInfoPokemon);
-                        }*/
                     }
                 }
             }

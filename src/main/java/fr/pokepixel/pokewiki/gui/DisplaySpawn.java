@@ -14,6 +14,7 @@ import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.Pixelmon;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
+import com.pixelmonmod.pixelmon.api.pokemon.PokemonSpec;
 import com.pixelmonmod.pixelmon.api.spawning.archetypes.entities.pokemon.SpawnInfoPokemon;
 import com.pixelmonmod.pixelmon.config.PixelmonItems;
 import com.pixelmonmod.pixelmon.config.PixelmonItemsHeld;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
 
+import static fr.pokepixel.pokewiki.Pokewiki.customSpawnPokemonInfoListInfo;
 import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.getSpawnInfoList;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
@@ -104,12 +106,39 @@ public class DisplaySpawn {
                     formname = pokemon.getFormEnum().getLocalizedName();
                 }
             }
-            buttonList.add(GooeyButton.builder()
-                    .display(ItemPixelmonSprite.getPhoto(pokespawn))
-                    .title("§6"+pokemon.getLocalizedName() + " "  + formname)
-                    .lore(Lists.newArrayList(createPokeDetails(spawnInfoPokemon,langspawn)))
-                    .build());
+            if (spawnInfoPokemon.rarity>0f){
+                buttonList.add(GooeyButton.builder()
+                        .display(ItemPixelmonSprite.getPhoto(pokespawn))
+                        .title("§6"+pokemon.getLocalizedName() + " "  + formname)
+                        .lore(createPokeDetails(spawnInfoPokemon,langspawn))
+                        .build());
+            }
         });
+        if (customSpawnPokemonInfoListInfo.containsKey(pokemon.getSpecies().getPokemonName())){
+            customSpawnPokemonInfoListInfo.get(pokemon.getSpecies().getPokemonName()).forEach(customSpawnPokemonInfo -> {
+                PokemonSpec spec = new PokemonSpec(customSpawnPokemonInfo.getSpec());
+                String formname = "";
+                if (spec.form != null){
+                    if (spec.form <= 0 && pokemon.getForm()<=0) {
+                        pokemon.setForm(spec.form);
+                    }
+                }
+                if (!pokemon.getFormEnum().getFormSuffix().isEmpty() && !pokemon.getFormEnum().getFormSuffix().equalsIgnoreCase("-normal")){
+                    formname = pokemon.getFormEnum().getLocalizedName();
+                }else{
+                    if (pokemon.getFormEnum().getUnlocalizedName().contains("battle_bond")){
+                        formname = pokemon.getFormEnum().getLocalizedName();
+                    }
+                }
+                if (spec.matches(pokemon)){
+                    buttonList.add(GooeyButton.builder()
+                            .display(ItemPixelmonSprite.getPhoto(pokemon))
+                            .title("§6"+pokemon.getLocalizedName() + " "  + formname)
+                            .lore(Lists.newArrayList(customSpawnPokemonInfo.getInfo()))
+                            .build());
+                }
+            });
+        }
         return buttonList;
     }
 
