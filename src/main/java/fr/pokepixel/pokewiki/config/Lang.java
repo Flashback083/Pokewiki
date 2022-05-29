@@ -33,8 +33,11 @@ public class Lang {
     private static String tmhmmoves = "&bTM/HM Moves:";
     private static String trmoves = "&bTR Moves:";
     private static String eggmoves = "&bEgg Moves:";
+    private static String mainguititle = "&eWiki";
+    private static String formguititle = "&cChoose the form";
 
     public static final String CATEGORY_SPAWN_LANG = "Spawn lang config";
+    private static String spawnguititle = "&cSpawn Info";
     private static String back = "&cBack:";
     private static String typeoflocation = "&eType of spawn location: &6%spawnlocation%";
     private static String minlevel = "&eMinimum level: &6%minlevel%";
@@ -42,12 +45,14 @@ public class Lang {
     private static String helditems = "&eHeld items: &6%helditems%";
     private static String biomes = "&eBiomes: %biomes%";
     private static String nearbyblocks = "&eNearby blocks: %nearbyblocks%";
+    private static String baseblocks = "&eBase blocks: %baseblocks%";
     private static String rarity = "&eRarity: %rarity%";
     private static String weathers = "&eWeather: %weathers%";
     private static String times = "&eTimes: %times%";
 
 
     public static final String CATEGORY_EVO_LANG = "Evolution lang config";
+    private static String evoguititle = "&cEvolution Info";
     private static String back2 = "&cBack:";
     private static String levellingup = "&aLevelling up ";
     private static String levelnumber = "&ato level %level%";
@@ -78,6 +83,8 @@ public class Lang {
     private static String statuspersistcondition = "&bWith Status: (WIP)";
     private static String withinstructurecondition = "&bWithin Structure: (WIP)";
 
+    public static final String CATEGORY_OTHERS_LANG = "Others lang config";
+    private static String pokemonnotfound = "&cThis pokemon do not exist!";
 
 
     public static void readConfig() {
@@ -87,6 +94,7 @@ public class Lang {
             initGeneralConfig(cfg);
             initSpawnConfig(cfg);
             initEvoConfig(cfg);
+            initOthersConfig(cfg);
         } catch (Exception e1) {
             System.out.println("Problem loading config file!");
         } finally {
@@ -99,6 +107,8 @@ public class Lang {
 
     private static void initGeneralConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_GENERAL_LANG, "Language configuration");
+        mainguititle = cfg.getString("mainguititle", CATEGORY_GENERAL_LANG, mainguititle, "&eWiki");
+        formguititle = cfg.getString("formguititle", CATEGORY_GENERAL_LANG, formguititle, "&cChoose the form");
         backtoformselection = cfg.getString("backtoformselection", CATEGORY_GENERAL_LANG, backtoformselection, "&bClick to go back to form selection");
         pokemontype = cfg.getString("pokemontype", CATEGORY_GENERAL_LANG, pokemontype, "&bType:");
         egggroups = cfg.getString("egggroups", CATEGORY_GENERAL_LANG, egggroups, "&bEgg groups: %egggroups%");
@@ -131,6 +141,7 @@ public class Lang {
 
     private static void initSpawnConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_SPAWN_LANG, "Spawn Language configuration");
+        spawnguititle = cfg.getString("spawnguititle", CATEGORY_SPAWN_LANG, spawnguititle, "&cSpawn Info");
         back = cfg.getString("back", CATEGORY_SPAWN_LANG, back, "&cBack:");
         typeoflocation = cfg.getString("typeoflocation", CATEGORY_SPAWN_LANG, typeoflocation, "&eType of spawn location: &6%spawnlocation%");
         minlevel = cfg.getString("minlevel", CATEGORY_SPAWN_LANG, minlevel, "&eMinimum level: &6%minlevel%");
@@ -138,6 +149,7 @@ public class Lang {
         helditems = cfg.getString("helditems", CATEGORY_SPAWN_LANG, helditems, "&eHeld items: &6%helditems%");
         biomes = cfg.getString("biomes", CATEGORY_SPAWN_LANG, biomes, "&eBiomes: %biomes%");
         nearbyblocks = cfg.getString("nearbyblocks", CATEGORY_SPAWN_LANG, nearbyblocks, "&eNearby blocks: %nearbyblocks%");
+        baseblocks = cfg.getString("baseblocks", CATEGORY_SPAWN_LANG, baseblocks, "&eBase blocks: %baseblocks%");
         rarity = cfg.getString("rarity", CATEGORY_SPAWN_LANG, rarity, "&eRarity: %rarity%");
         weathers = cfg.getString("weathers", CATEGORY_SPAWN_LANG, weathers, "&eWeathers: %wheathers%");
         times = cfg.getString("times", CATEGORY_SPAWN_LANG, times, "&eTime: %times%");
@@ -145,6 +157,7 @@ public class Lang {
 
     private static void initEvoConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_EVO_LANG, "Evo Language configuration");
+        evoguititle = cfg.getString("evoguititle", CATEGORY_EVO_LANG, evoguititle, "&cEvolution Info");
         back2 = cfg.getString("back2", CATEGORY_EVO_LANG, back2, "&cBack:");
         levellingup = cfg.getString("levellingup", CATEGORY_EVO_LANG, levellingup, "&e%pokemoname%: &aLevelling up");
         levelnumber = cfg.getString("levelnumber", CATEGORY_EVO_LANG, levelnumber, "&ato level %level%");
@@ -174,6 +187,13 @@ public class Lang {
         absenceofhealcondition = cfg.getString("absenceofhealcondition", CATEGORY_EVO_LANG, absenceofhealcondition, "&bWith Health absence: (WIP)");
         statuspersistcondition = cfg.getString("statuspersistcondition", CATEGORY_EVO_LANG, statuspersistcondition,"&bWith Status: (WIP)");
         withinstructurecondition = cfg.getString("withinstructurecondition", CATEGORY_EVO_LANG, withinstructurecondition, "&bWithin Structure: (WIP)");
+
+    }
+
+    private static void initOthersConfig(Configuration cfg) {
+        cfg.addCustomCategoryComment(CATEGORY_OTHERS_LANG, "Others Language configuration");
+        pokemonnotfound = cfg.getString("pokemonnotfound", CATEGORY_OTHERS_LANG, pokemonnotfound, "&cThis pokemon do not exist!");
+
 
     }
 

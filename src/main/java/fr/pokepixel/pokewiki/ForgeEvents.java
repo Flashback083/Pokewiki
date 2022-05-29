@@ -6,9 +6,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import static fr.pokepixel.pokewiki.config.Config.CATEGORY_GENERAL;
 import static fr.pokepixel.pokewiki.gui.ChoiceForm.openChoiceFormGUI;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
-import static net.minecraftforge.common.config.Configuration.CATEGORY_GENERAL;
 
 public class ForgeEvents {
 

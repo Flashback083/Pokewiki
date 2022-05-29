@@ -21,19 +21,23 @@ import com.pixelmonmod.pixelmon.enums.EnumSpecies;
 import com.pixelmonmod.pixelmon.enums.forms.IEnumForm;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
 import com.pixelmonmod.pixelmon.spawning.PixelmonSpawning;
+import fr.pokepixel.pokewiki.Pokewiki;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
+import static fr.pokepixel.pokewiki.config.Lang.CATEGORY_GENERAL_LANG;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
 
 public class ChoiceForm {
 
     public static void openChoiceFormGUI(EntityPlayerMP player, EnumSpecies specie){
-
+        ConfigCategory langgeneral = Pokewiki.lang.getCategory(CATEGORY_GENERAL_LANG);
         Button glass = GooeyButton.builder()
                 .display(new ItemStack(Blocks.STAINED_GLASS_PANE,1,15))
                 .build();
@@ -55,19 +59,29 @@ public class ChoiceForm {
 
         PlaceholderButton placeholder = new PlaceholderButton();
 
-        ChestTemplate template = ChestTemplate.builder(4)
+        List<Button> buttonList = createButtonFromList(specie);
+
+        ChestTemplate.Builder templateBuilder = ChestTemplate.builder(4)
                 //.line(LineType.HORIZONTAL,5,0,9,glass)
                 .rectangle(0, 2, 2, 5, placeholder)
-                .fill(glass)
-                .set(3,3,previous)
-                .set(3,5,next)
-                .build();
+                .fill(glass);
+                //.set(3,3,previous)
+                //.set(3,5,next)
+                //.build();
+        
+        if (buttonList.size()>10){
+            templateBuilder.set(3,3,previous);
+            templateBuilder.set(3,5,next);
+        }
+
+        ChestTemplate template = templateBuilder.build();
 
         LinkedPage.Builder page = LinkedPage.builder()
-                .title("");
+                .title(translateAlternateColorCodes('&',langgeneral.get("formguititle").getString()));
+
 
         //Make this offthread
-        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, createButtonFromList(specie), page);
+        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, buttonList, page);
         UIManager.openUIForcefully(player, firstPage);
 
     }

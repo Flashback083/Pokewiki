@@ -37,7 +37,7 @@ public class Pokewiki {
 
     public static final String MOD_ID = "pokewiki";
     public static final String MOD_NAME = "Pokewiki";
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.1.0";
 
     public static File directory;
     public static Configuration lang;

@@ -15,26 +15,37 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Lists;
 import com.pixelmonmod.pixelmon.api.pokemon.Pokemon;
 import com.pixelmonmod.pixelmon.config.PixelmonItems;
-import com.pixelmonmod.pixelmon.config.PixelmonItemsHeld;
 import com.pixelmonmod.pixelmon.items.ItemPixelmonSprite;
+import fr.pokepixel.pokewiki.Pokewiki;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
+import java.util.Objects;
 
 import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
+import static fr.pokepixel.pokewiki.config.Config.CATEGORY_BUTTON;
 import static fr.pokepixel.pokewiki.gui.DisplayInfo.displayInfoGUI;
 import static fr.pokepixel.pokewiki.info.SimpleInfo.getInfoEvo;
 
 public class DisplayEvo {
 
     public static void displayEvoGUI(EntityPlayerMP player, Pokemon pokemon, ConfigCategory langevo){
+        ConfigCategory buttonConfig = Pokewiki.config.getCategory(CATEGORY_BUTTON);
+        String item = buttonConfig.get("backbuttonid").getString();
+        String itemid = item.split("/")[0];
+        int meta = 0;
+        if (item.contains("/")){
+            meta = Integer.parseInt(item.split("/")[1]);
+        }
+        ItemStack itemStack = new ItemStack(Objects.requireNonNull(Item.getByNameOrId(itemid)), 1, meta);
 
         Button ejectbutton = GooeyButton.builder()
                 .title(translateAlternateColorCodes('&',langevo.get("back2").getString()))
-                .display(new ItemStack(PixelmonItemsHeld.ejectButton))
+                .display(itemStack)
                 .hideFlags(FlagType.All)
                 .onClick(buttonAction -> {
                     displayInfoGUI(buttonAction.getPlayer(),pokemon);
@@ -68,22 +79,31 @@ public class DisplayEvo {
                 .build();
 
         PlaceholderButton placeholder = new PlaceholderButton();
+        
+        List<Button> buttonList = getEvoInfos(pokemon,langevo);
 
-        ChestTemplate template = ChestTemplate.builder(5)
-                .rectangle(0,0,2,9,redglass)
-                .line(LineType.HORIZONTAL,2,0,9,blackglass)
-                .rectangle(3,0,2,9,whiteglass)
+        ChestTemplate.Builder templateBuilder = ChestTemplate.builder(5)
+                .rectangle(0, 0, 2, 9, redglass)
+                .line(LineType.HORIZONTAL, 2, 0, 9, blackglass)
+                .rectangle(3, 0, 2, 9, whiteglass)
                 .rectangle(1, 4, 3, 3, placeholder)
-                .set(2,1,ejectbutton)
-                .set(4,4,previous)
-                .set(4,6,next)
-                .build();
+                .set(2, 1, ejectbutton);
+                //.set(4,4,previous)
+                //.set(4,6,next)
+                //.build();
+
+        if (buttonList.size()>9){
+            templateBuilder.set(4,4,previous);
+            templateBuilder.set(4,6,next);
+        }
+
+        ChestTemplate template = templateBuilder.build();
 
         LinkedPage.Builder page = LinkedPage.builder()
-                .title("Evolution Info");
+                .title(translateAlternateColorCodes('&',langevo.get("evoguititle").getString()));
 
         //Make this offthread
-        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, getEvoInfos(pokemon,langevo), page);
+        LinkedPage firstPage = PaginationHelper.createPagesFromPlaceholders(template, buttonList, page);
         UIManager.openUIForcefully(player, firstPage);
 
     }

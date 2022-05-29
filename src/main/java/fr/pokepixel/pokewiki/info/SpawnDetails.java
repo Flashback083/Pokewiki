@@ -59,6 +59,9 @@ public class SpawnDetails {
             if (spawnInfo.condition.cachedNeededNearbyBlocks != null && !spawnInfo.condition.cachedNeededNearbyBlocks.isEmpty()){
                 txt.add(translateAlternateColorCodes('&',langspawn.get("nearbyblocks").getString().replaceFirst("%nearbyblocks%",getNearbyBlocksSpawns(spawnInfo))));
             }
+            if (spawnInfo.condition.cachedBaseBlocks != null && !spawnInfo.condition.cachedBaseBlocks.isEmpty()){
+                txt.add(translateAlternateColorCodes('&',langspawn.get("baseblocks").getString().replaceFirst("%baseblocks%",getBaseBlocksSpawns(spawnInfo))));
+            }
         }
         /*ForgeRegistries.BLOCKS.forEach(block -> {
             if (block.getLocalizedName().endsWith(".name")){
@@ -195,6 +198,43 @@ public class SpawnDetails {
                 info.compositeCondition.anticonditions.forEach(anticondition -> {
                     if (anticondition.cachedNeededNearbyBlocks != null && anticondition.cachedNeededNearbyBlocks.isEmpty()) {
                         allBlocks.removeIf(block -> anticondition.cachedNeededNearbyBlocks.contains(block));
+                    }
+                });
+            }
+        }
+        Set<Block> avail = new HashSet<>(allBlocks);
+        ArrayList<String> blocksName = new ArrayList<>();
+        for (Block block : avail) {
+            /*if (block.getLocalizedName().endsWith(".name")){
+                blocksName.add(TextFormatting.DARK_AQUA+new ItemStack(block).getDisplayName());
+            }else{
+
+            }*/
+            blocksName.add(TextFormatting.DARK_AQUA+block.getLocalizedName());
+        }
+        return String.join(TextFormatting.YELLOW+", ",blocksName);
+    }
+
+    public static String getBaseBlocksSpawns(SpawnInfoPokemon info){
+        ArrayList<Block> allBlocks = Lists.newArrayList(ForgeRegistries.BLOCKS);
+        if (info.condition != null && info.condition.cachedBaseBlocks != null && !info.condition.cachedBaseBlocks.isEmpty()) {
+            allBlocks.removeIf(blocks -> !info.condition.cachedBaseBlocks.contains(blocks));
+        }
+        if (info.anticondition != null && info.anticondition.cachedBaseBlocks != null && !info.anticondition.cachedBaseBlocks.isEmpty()) {
+            allBlocks.removeIf(block -> info.anticondition.cachedBaseBlocks.contains(block));
+        }
+        if (info.compositeCondition != null) {
+            if (info.compositeCondition.conditions != null) {
+                info.compositeCondition.conditions.forEach(condition -> {
+                    if (condition.cachedBaseBlocks != null && !condition.cachedBaseBlocks.isEmpty()) {
+                        allBlocks.removeIf(block -> !condition.cachedBaseBlocks.contains(block));
+                    }
+                });
+            }
+            if (info.compositeCondition.anticonditions != null) {
+                info.compositeCondition.anticonditions.forEach(anticondition -> {
+                    if (anticondition.cachedBaseBlocks != null && anticondition.cachedBaseBlocks.isEmpty()) {
+                        allBlocks.removeIf(block -> anticondition.cachedBaseBlocks.contains(block));
                     }
                 });
             }

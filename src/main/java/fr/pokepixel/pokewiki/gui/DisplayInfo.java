@@ -21,7 +21,6 @@ import net.minecraftforge.common.config.ConfigCategory;
 
 import java.util.List;
 
-import static fr.pokepixel.pokewiki.Pokewiki.customSpawnPokemonInfoListInfo;
 import static fr.pokepixel.pokewiki.config.ChatColor.translateAlternateColorCodes;
 import static fr.pokepixel.pokewiki.config.Lang.*;
 import static fr.pokepixel.pokewiki.config.Utils.canSpawnCustom;
@@ -234,7 +233,7 @@ public class DisplayInfo {
 
         LinkedPage page = LinkedPage.builder()
                 .template(template)
-                .title("§eWiki")
+                .title(translateAlternateColorCodes('&',langgeneral.get("mainguititle").getString()))
                 .build();
         UIManager.openUIForcefully(player, page);
 

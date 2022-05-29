@@ -6,8 +6,11 @@ import org.apache.logging.log4j.Level;
 
 public class Config {
 
-    private static final String CATEGORY_GENERAL = "General";
+    public static final String CATEGORY_GENERAL = "General";
     private static boolean allowRightClickOpenWiki = false;
+
+    public static final String CATEGORY_BUTTON = "Buttons";
+    private static String backbuttonid = "pixelmon:eject_button";
 
     //-----------------------------------------------------//
   
@@ -30,6 +33,8 @@ public class Config {
     private static void initGeneralConfig(Configuration cfg) {
         cfg.addCustomCategoryComment(CATEGORY_GENERAL, "General configuration");
         allowRightClickOpenWiki = cfg.getBoolean("allowRightClickOpenWiki", CATEGORY_GENERAL, allowRightClickOpenWiki, "Set to true to allow Sneak + Right clic on a pokemon to open his wiki");
+        backbuttonid = cfg.getString("backbuttonid", CATEGORY_BUTTON, backbuttonid, "itemid/metadata to replace the item of the back button");
+
     }
     
 
