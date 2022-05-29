@@ -73,7 +73,7 @@ public class Lang {
     private static String withformcondition = "&bWith Pokémon of these forms in party: %formlist%";
     private static String statratiocondition = "&bWith a stat ratio of %ratio% between %stat1% and %stat2%";
     private static String timecondition = "&bDuring: %time%";
-    private static String weathercondition = "&bWith weather: Rain";
+    private static String weathercondition = "&bWith weather: %weather%";
     private static String scrollcondition = "&bWith Scroll: %scroll% at range %range%";
     private static String battlecriticalcondition = "&bWith critical: %crit%";
     private static String recoildamagecondition = "&bWith Recoil damage: %recoil%";
@@ -178,7 +178,7 @@ public class Lang {
         withformcondition = cfg.getString("withformcondition", CATEGORY_EVO_LANG, withformcondition,"&bWith Pokémon of these forms in party: %formlist%" );
         statratiocondition = cfg.getString("statratiocondition", CATEGORY_EVO_LANG, statratiocondition, "&bWith a stat ratio of %ratio% between %stat1% and %stat2%");
         timecondition = cfg.getString("timecondition", CATEGORY_EVO_LANG, timecondition, "&bDuring: %time%");
-        weathercondition = cfg.getString("weathercondition", CATEGORY_EVO_LANG, weathercondition, "&bWith weather: Rain");
+        weathercondition = cfg.getString("weathercondition", CATEGORY_EVO_LANG, weathercondition, "&bWith weather: %weather%");
         scrollcondition = cfg.getString("scrollcondition", CATEGORY_EVO_LANG, scrollcondition, "&bWith Scroll: %scroll% at range %range%");
         battlecriticalcondition = cfg.getString("battlecriticalcondition", CATEGORY_EVO_LANG, battlecriticalcondition, "&bWith critical: %crit%");
         recoildamagecondition = cfg.getString("recoildamagecondition", CATEGORY_EVO_LANG, recoildamagecondition, "&bWith Recoil damage: %recoil%");
