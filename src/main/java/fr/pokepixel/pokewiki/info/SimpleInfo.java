@@ -313,8 +313,8 @@ public class SimpleInfo {
                             //baseMsg.append("\n"+"      " + conditiontxt);
                             //baseMsg.append("§r");
                         } else if (condition instanceof WeatherCondition) {
-                            String conditiontxt = translateAlternateColorCodes('&', lang.get("weathercondition").getString());
-                            evoinfo.add("      " + conditiontxt);
+                            String conditiontxt = translateAlternateColorCodes('&', lang.get("weathercondition").getString().replaceFirst("%weather%", String.valueOf((((WeatherCondition) condition).weather))));
+                            evoinfo.add("    " + conditiontxt);
                             //baseMsg.append("\n"+"      " + conditiontxt);
                             //baseMsg.append("§r");
                         }else if (condition instanceof EvoScrollCondition){
